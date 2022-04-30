@@ -53,15 +53,23 @@ const questions = [
 
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
-  return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+  // return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+  fs.writeFile(fileName, data, (err) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("File complete");
+  });
 }
 
 // TODO: Create a function to initialize app
 function init() {
-  return inquirer
-    .prompt(questions)
-    .then(generateMarkdown(data))
-    .then(writeToFile(data.title, data));
+  return inquirer.prompt(questions).then((answers) => {
+    writeToFile(`${answers.title}.md`, generateMarkdown(answers));
+  });
+
+  // .then(generateMarkdown(data))
+  // .then(writeToFile(data.title, data));
 }
 
 // Function call to initialize app
